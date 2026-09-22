@@ -1,0 +1,90 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: env-monitor-backend
+  profiles:
+    active: prod
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: false
+
+env:
+  monitor:
+    # 项目要求：禁止模拟数据，仅硬件实时上报
+    simulate-enabled: false
+    simulate-interval-ms: 3000
+    default-device-id: sensor-001
+    device-api-key: env-monitor-2026
+    thresholds:
+      # 与硬件固件一致：仅“超过”上限报警（不是舒适区间）
+      # 温度 > 30℃ 报警；湿度 > 50% 报警；MQ135 > 200 报警
+      temp-min: -1000
+      temp-max: 30.0
+      humidity-min: -1000
+      humidity-max: 50.0
+      mq135-warn: 200.0
+      mq135-danger: 200.0
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:envmonitor;DB_CLOSE_DELAY=-1;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/env_monitor?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1103110
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+---
+# 本机 3306 上的 MySQL 5.5（root/148627）；8.3 在 3307 且密码不是这个
+spring:
+  config:
+    activate:
+      on-profile: mysql55
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/env_monitor?useUnicode=true&characterEncoding=utf8&useSSL=false&autoReconnect=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 148627
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+---
+# 本地文件库（推荐演示/课程设计：数据落在项目目录，可直接看到）
+spring:
+  config:
+    activate:
+      on-profile: h2file
+  datasource:
+    url: jdbc:h2:file:./data/envmonitor;MODE=MySQL;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
