@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/register/register",
+    "pages/index/index",
+    "pages/alerts/alerts",
+    "pages/stats/stats",
+    "pages/device/device"
+  ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "环境监测",
+    "navigationBarBackgroundColor": "#0F1C24",
+    "backgroundColor": "#F2F5F3",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": true,
+    "onReachBottomDistance": 50
+  },
+  "tabBar": {
+    "color": "#7A8B86",
+    "selectedColor": "#1F7A6E",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tabs/home-nor.png",
+        "selectedIconPath": "images/tabs/home-sel.png"
+      },
+      {
+        "pagePath": "pages/alerts/alerts",
+        "text": "告警",
+        "iconPath": "images/tabs/alert-nor.png",
+        "selectedIconPath": "images/tabs/alert-sel.png"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "曲线",
+        "iconPath": "images/tabs/stats-nor.png",
+        "selectedIconPath": "images/tabs/stats-sel.png"
+      },
+      {
+        "pagePath": "pages/device/device",
+        "text": "设备",
+        "iconPath": "images/tabs/device-nor.png",
+        "selectedIconPath": "images/tabs/device-sel.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

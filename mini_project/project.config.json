@@ -1,0 +1,54 @@
+{
+  "compileType": "miniprogram",
+  "libVersion": "3.17.2",
+  "packOptions": {
+    "ignore": [
+      { "type": "folder", "value": "firmware" },
+      { "type": "folder", "value": "backend" },
+      { "type": "folder", "value": "tools" },
+      { "type": "folder", "value": "pages/logs" },
+      { "type": "suffix", "value": ".md" },
+      { "type": "suffix", "value": ".py" },
+      { "type": "suffix", "value": ".java" },
+      { "type": "file", "value": "index.html" }
+    ],
+    "include": []
+  },
+  "setting": {
+    "coverView": true,
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "enhance": true,
+    "showShadowRootInWxmlPanel": true,
+    "packNpmRelationList": [],
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "minifyWXSS": true,
+    "localPlugins": false,
+    "urlCheck": false,
+    "condition": false,
+    "compileWorklet": false,
+    "disableUseStrict": false,
+    "minifyWXML": true,
+    "useCompilerPlugins": false,
+    "lazyloadPlaceholderEnable": false,
+    "skylineRenderEnable": false,
+    "useIsolateContext": true,
+    "minifyWXSS": true,
+    "ignoreUploadUnusedFiles": true
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "auto",
+    "tabSize": 2
+  },
+  "appid": "wxd26ffd659abc069a",
+  "simulatorPluginLibVersion": {}
+}
