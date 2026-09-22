@@ -1,37 +1,61 @@
-# 历史曲线与人员进出事件
+# MDK-ARM / Keil 集成说明
 
-## 功能
+本目录不提供完整 `.uvprojx`（与 Keil 版本/CubeMX 芯片包强绑定），请按下述步骤挂进你自己的工程。
 
-1. **历史曲线**（统计页 / 底栏「曲线」）  
-   - 温湿度随时间变化  
-   - MQ135 随时间变化  
-   - Canvas 折线，图例/网格/坐标，展示效果对标 ECharts  
+## 1. CubeMX 建议配置（STM32F103C8T6）
 
-2. **红外进出事件日志**  
-   - 红外 `0` → **有人进入房间**  
-   - 红外 `1` → **离开房间**  
-   - 后端在每次上报时检测状态跳变并入库  
-   - 小程序统计页展示时间线，并写入本地缓存  
+| 外设 | 配置 |
+|------|------|
+| USART1 | 异步 115200，日志 |
+| USART2 | 异步 115200，ESP8266 |
+| ADC1 | IN1（PA1），扫描关闭 |
+| GPIO | PB12 输出（DHT11，代码里会切换模式）；PB13 输入（PIR） |
+| SYS | Timebase = SysTick |
 
-## 接口
+生成工具链选 **MDK-ARM**，生成后用 Keil 打开。
 
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/sensor/history?deviceId=&hours=24` | 曲线数据 |
-| GET | `/api/device/events?deviceId=&hours=24` | 进出事件 |
-| GET | `/api/device/events/summary` | 进入/离开次数 |
+## 2. 加入源文件
 
-## 约定
+Keil 工程管理：
 
-红外 **低电平有效**：`pir=0` 有人，`pir=1` 无人（与硬件一致）。
+1. 新建 Group：`Firmware`
+2. 添加文件：
+   - `../Src/main.c`（若与 CubeMX 的 main.c 冲突：改名 `app_task.c`，在 CubeMX main 的 while(1) 里调用 `app_loop_once()`，在初始化后调用 `app_setup()`）
+   - `../Src/dht11.c`
+   - `../Src/mq135.c`
+   - `../Src/pir.c`
+   - `../Src/sensor_frame.c`
+   - `../Src/esp8266_http.c`
+3. C/C++ → Include Paths 增加 `../Inc`
 
-## 组件
+## 3. 与 CubeMX main.c 的推荐接法（更稳）
 
-- `components/line-chart/`：小程序 Canvas 折线图（自适应 dpr）  
-- `libs/echarts.min.js`：完整 ECharts 5，可后续替换为 ec-canvas 官方方案  
+不替换 `main.c`，而在用户代码区插入：
 
-## 查看
+```c
+/* USER CODE Includes */
+#include "board_config.h"
+#include "esp8266_http.h"
+#include "dht11.h"
+#include "mq135.h"
+#include "pir.h"
+#include "sensor_frame.h"
 
-1. 启动后端  
-2. 硬件上报且红外有人/无人切换  
-3. 微信开发者工具 → 底栏 **曲线** → 查看图表与「人员进出事件日志」
+/* main 初始化末尾 */
+app_setup();
+
+/* while(1) 内 */
+app_loop_once();
+```
+
+把 `firmware/Src/main.c` 里 `app_setup` / `app_loop_once` / `app_sample` 复制到单独 `app_task.c`，避免与 CubeMX 双 main。
+
+## 4. 编译宏
+
+C/C++ → Define 可加：
+
+```
+STM32F103xB,USE_HAL_DRIVER
+```
+
+与 CubeMX 生成一致即可。
