@@ -1,0 +1,6 @@
+<canvas
+  type="2d"
+  id="{{canvasId}}"
+  class="chart-canvas"
+  style="width:100%;height:{{height}}px;"
+></canvas>
