@@ -1,0 +1,40 @@
+<view class="auth-page">
+  <view class="auth-hero">
+    <view class="logo">安</view>
+    <view class="title">安居哨兵</view>
+    <view class="sub">多传感器环境安全监测</view>
+  </view>
+
+  <view class="card auth-card">
+    <view class="form-item">
+      <view class="form-label">用户名</view>
+      <input
+        class="form-input"
+        placeholder="3-32 位字母数字下划线"
+        value="{{username}}"
+        bindinput="onUsername"
+        maxlength="32"
+      />
+    </view>
+    <view class="form-item">
+      <view class="form-label">密码</view>
+      <input
+        class="form-input"
+        password
+        placeholder="6-32 位"
+        value="{{password}}"
+        bindinput="onPassword"
+        maxlength="32"
+      />
+    </view>
+
+    <view class="submit-bar {{loading ? 'disabled' : ''}}" bindtap="onLogin">
+      {{loading ? '登录中…' : '登 录'}}
+    </view>
+
+    <view class="auth-links">
+      <text class="link" bindtap="goRegister">没有账号？去注册</text>
+    </view>
+    <view class="muted auth-tip">{{tip}}</view>
+  </view>
+</view>

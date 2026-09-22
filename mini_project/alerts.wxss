@@ -1,0 +1,32 @@
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.item.danger {
+  border-left: 8rpx solid var(--coral);
+  background: #FFF7F7;
+}
+
+.item.warn {
+  border-left: 8rpx solid var(--amber);
+}
+
+.msg {
+  font-size: 28rpx;
+  line-height: 1.5;
+  margin-bottom: 8rpx;
+}
+
+.mark {
+  margin-top: 16rpx;
+  text-align: center;
+  height: 64rpx;
+  line-height: 64rpx;
+  border-radius: 14rpx;
+  border: 1rpx solid var(--line);
+  color: var(--teal);
+  font-size: 26rpx;
+  background: #fff;
+}

@@ -1,0 +1,33 @@
+<view class="page">
+  <view class="card filter">
+    <view class="section-title" style="margin:0;flex:1">告警记录</view>
+    <view class="chip {{onlyOpen ? 'on' : ''}}" style="flex:0 0 auto;padding:12rpx 28rpx" bindtap="onToggleOpen">
+      {{onlyOpen ? '仅未处理' : '全部'}}
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{error}}">
+    <view style="color:var(--coral);font-weight:600">加载失败</view>
+    <view class="muted">{{error}}</view>
+  </view>
+
+  <view class="empty" wx:if="{{!loading && !error && !items.length}}">暂无告警记录</view>
+
+  <view class="card item {{item.levelClass}}" wx:for="{{items}}" wx:key="id">
+    <view class="msg">{{item.message}}</view>
+    <view class="muted mono">{{item.time}}</view>
+    <view style="margin-top:12rpx">
+      <text class="tag {{item.levelClass}}">{{item.levelText}}</text>
+      <text class="tag">{{item.type}}</text>
+      <text class="tag info" wx:if="{{item.resolved}}">已处理</text>
+    </view>
+    <view
+      wx:if="{{!item.resolved}}"
+      class="mark"
+      data-id="{{item.id}}"
+      bindtap="onMarkDone"
+    >标记已处理</view>
+  </view>
+
+  <view class="pull-tip">下拉页面可刷新告警</view>
+</view>

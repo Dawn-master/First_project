@@ -1,0 +1,89 @@
+<view class="page">
+  <view class="card">
+    <view class="section-title" style="margin-top:0">统计区间</view>
+    <view class="chip-row" style="margin-bottom:0">
+      <view class="chip {{hours==6?'on':''}}" data-h="6" bindtap="onPickHours">近 6 小时</view>
+      <view class="chip {{hours==24?'on':''}}" data-h="24" bindtap="onPickHours">近 24 小时</view>
+      <view class="chip {{hours==72?'on':''}}" data-h="72" bindtap="onPickHours">近 3 天</view>
+    </view>
+  </view>
+
+  <view class="card warn-card">
+    <view class="muted">{{tip}}</view>
+    <view class="muted mono">上次刷新 {{lastRefresh}}</view>
+  </view>
+
+  <view class="grid">
+    <view class="card cell">
+      <view class="lab">采样次数</view>
+      <view class="num {{hasData ? 'mono' : 'nodata'}}">{{hasData ? count : '无数据'}}</view>
+    </view>
+    <view class="card cell">
+      <view class="lab">平均温度</view>
+      <view class="num {{hasData ? 'mono' : 'nodata'}}">{{avgTemp}}</view>
+    </view>
+    <view class="card cell">
+      <view class="lab">平均湿度</view>
+      <view class="num {{hasData ? 'mono' : 'nodata'}}">{{avgHum}}</view>
+    </view>
+    <view class="card cell">
+      <view class="lab">平均 MQ135</view>
+      <view class="num {{hasData ? 'mono' : 'nodata'}}">{{avgMq}}</view>
+    </view>
+    <view class="card cell">
+      <view class="lab">峰值 MQ135</view>
+      <view class="num {{hasData ? 'mono' : 'nodata'}}">{{maxMq}}</view>
+    </view>
+    <view class="card cell">
+      <view class="lab">有人占比</view>
+      <view class="num {{hasData ? 'mono' : 'nodata'}}">{{presenceRate}}</view>
+    </view>
+  </view>
+
+  <!-- 历史曲线 -->
+  <view class="card">
+    <view class="section-title" style="margin-top:0">温湿度历史曲线</view>
+    <line-chart
+      series="{{seriesTempHum}}"
+      categories="{{categories}}"
+      height="{{260}}"
+    />
+  </view>
+
+  <view class="card">
+    <view class="section-title" style="margin-top:0">MQ135 历史曲线</view>
+    <line-chart
+      series="{{seriesMq}}"
+      categories="{{categories}}"
+      height="{{220}}"
+    />
+  </view>
+
+  <!-- 人员进出事件 -->
+  <view class="card">
+    <view class="section-head">
+      <view class="section-title" style="margin:0">人员进出事件日志</view>
+      <view class="muted">进入 {{enterCount}} · 离开 {{exitCount}}</view>
+    </view>
+    <view class="muted" style="margin-bottom:12rpx">{{eventTip}}</view>
+
+    <view class="empty" wx:if="{{!events.length}}">
+      暂无进出记录（红外：0=进入房间，1=离开）
+    </view>
+
+    <view class="event {{item.cls}}" wx:for="{{events}}" wx:key="id">
+      <view class="e-row">
+        <view class="e-dot"></view>
+        <view class="e-body">
+          <view class="e-title">{{item.label}}</view>
+          <view class="muted mono">{{item.time}}</view>
+          <view class="muted" wx:if="{{item.temp != null}}">
+            当时环境：{{item.temp}}℃<text wx:if="{{item.mq != null}}"> · MQ {{item.mq}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="pull-tip">下拉页面可刷新曲线与事件</view>
+</view>

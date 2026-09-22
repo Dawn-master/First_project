@@ -1,0 +1,75 @@
+<view class="page">
+  <view class="card top">
+    <view>
+      <view class="title">实时环境监测</view>
+      <view class="muted mono">{{deviceId}} · {{clock}}</view>
+    </view>
+    <view class="status s-{{status}}">
+      <view class="led-dot"></view>
+      <text>{{statusText}}</text>
+    </view>
+  </view>
+
+  <view class="card tip-card">
+    <view class="muted">{{tip}} · 数据于 {{ageText}}</view>
+    <view class="muted mono" wx:if="{{hasData}}">{{updatedAt}}</view>
+  </view>
+
+  <!-- 阈值报警 -->
+  <view class="card alarm {{alarm ? 'on' : ''}}">
+    <view class="sec-row">
+      <view class="section-title" style="margin:0">阈值报警</view>
+      <view class="badge {{alarm ? 'bad' : 'ok'}}">{{alarm ? '报警中' : '正常'}}</view>
+    </view>
+    <view class="alarm-list" wx:if="{{alarm && alarms.length}}">
+      <view class="alarm-item" wx:for="{{alarms}}" wx:key="index">{{item}}</view>
+      <view class="muted" style="margin-top:12rpx">已弹窗提示原因 · 持续超标不会重复弹窗</view>
+    </view>
+    <view class="muted" wx:else>当前无超阈值项</view>
+  </view>
+
+  <!-- LED 控制 -->
+  <view class="card led-card">
+    <view class="sec-row">
+      <view>
+        <view class="section-title" style="margin:0">LED 控制器</view>
+        <view class="muted">远程开关硬件 LED（板载 PA4）</view>
+      </view>
+      <view class="led-switch {{ledOn ? 'on' : ''}}" bindtap="onToggleLed">
+        <view class="knob"></view>
+        <text>{{ledOn ? '开' : '关'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 实时读数 -->
+  <view class="grid">
+    <view class="card tile {{!hasData ? 'dim' : ''}} {{hasData && !metricOk.temp ? 'bad' : 'ok-t'}}">
+      <view class="lab">温度</view>
+      <view class="val {{hasData ? 'mono' : 'nodata'}}">{{temp}}<text class="u" wx:if="{{hasData}}">℃</text></view>
+      <view class="muted">{{thrText.temp}}</view>
+    </view>
+    <view class="card tile {{!hasData ? 'dim' : ''}} {{hasData && !metricOk.humidity ? 'bad' : 'ok-t'}}">
+      <view class="lab">湿度</view>
+      <view class="val {{hasData ? 'mono' : 'nodata'}}">{{humidity}}<text class="u" wx:if="{{hasData}}">%</text></view>
+      <view class="muted">{{thrText.humidity}}</view>
+    </view>
+    <view class="card tile {{!hasData ? 'dim' : ''}} {{presence && hasData ? 'on' : ''}}">
+      <view class="lab">红外感应</view>
+      <view class="val {{hasData ? '' : 'nodata'}}">{{pirText}}</view>
+      <view class="muted">0 有人 / 1 无人</view>
+    </view>
+    <view class="card tile {{!hasData ? 'dim' : ''}} {{hasData && !metricOk.mq135 ? 'bad' : 'ok-t'}}">
+      <view class="lab">MQ135</view>
+      <view class="val {{hasData ? 'mono' : 'nodata'}}">{{mq135}}</view>
+      <view class="muted">{{thrText.mq135}}</view>
+    </view>
+  </view>
+
+  <view class="card score-card" wx:if="{{hasData}}">
+    <view class="muted">舒适度</view>
+    <view class="score">{{score}} <text class="lv">{{scoreLevel}}</text></view>
+ll  </view>
+
+  <view class="pull-tip">下拉页面可刷新实时数据</view>
+</view>

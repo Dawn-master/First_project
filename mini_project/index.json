@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "实时监测",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "usingComponents": {}
+}
